@@ -12,3 +12,4 @@ A mock mess swap portal created for SWD Inductions
 * Implement logging out of google
 * ~~Centre the Google Sign in button~~
 * ~~Configure local storage to store requests(or a server?)~~
+* ~~Google One-Tap Auto Sign in~~
