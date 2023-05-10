@@ -1,11 +1,25 @@
 body {
-    background-color: #cfe2ff;
+    background-image: linear-gradient(135deg, #242424 70%, #00FFFF 25%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color:white
 }
 
 #root {
     text-align: center;
+    align-items: center;
+    justify-items: center;
+    display: flex;
+    flex-direction: column;
     font-family: 'Calibri';
 }
+
+#root h1 {
+background: -webkit-linear-gradient(red, #FFA500);
+background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
 #root input[type=text]:disabled {
     background-color: #D3D3D3;
 }

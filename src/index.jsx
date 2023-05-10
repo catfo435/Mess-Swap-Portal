@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import "./index.css"
 
 import jwt_decode from 'jwt-decode';
+import { createClient } from '@supabase/supabase-js';
 
 import GoogleOAuth from './GoogleOAuth';
 import PlaceReq from './PlaceReq'
@@ -25,6 +26,7 @@ export default function MainPage() {
 
   const [studentUID, setUID] = useState();
   const [pageStatus,setPageStatus] = useState();
+  const supabase = createClient(process.env.REACT_APP_SUPABASEURL, process.env.REACT_APP_SUPABASEKEY)
 
   return (
     <>
@@ -43,7 +45,7 @@ export default function MainPage() {
       {pageStatus?<button onClick={() => {setPageStatus(!pageStatus)}}>Place Requests</button>:<button disabled={studentUID ? false : true} onClick={() => {setPageStatus(!pageStatus)}}>Approve Requests</button>}
       <br></br>
       <br></br>
-      {pageStatus?<ApproveReq studentUID={studentUID}></ApproveReq>:<PlaceReq studentUID={studentUID}></PlaceReq>}
+      {pageStatus?<ApproveReq studentUID={studentUID} supabase={supabase}></ApproveReq>:<PlaceReq studentUID={studentUID} supabase={supabase}></PlaceReq>}
     </>
   )
 }
