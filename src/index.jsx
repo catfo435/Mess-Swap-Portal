@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import "./index.css"
+import "./Styles/index.css"
 
 import jwt_decode from 'jwt-decode';
 import { createClient } from '@supabase/supabase-js';
 
-import GoogleOAuth from './GoogleOAuth';
-import PlaceReq from './PlaceReq'
-import ApproveReq from './ApproveReq'
-import Header from './Header'
+import GoogleOAuth from './Components/GoogleOAuth';
+import PlaceReq from './Pages/PlaceReq'
+import ApproveReq from './Pages/ApproveReq'
+import Header from './Components/Header'
 
 export default function MainPage() {
 
   const responseMessage = (response) => {
     const studentData = jwt_decode(response.credential)
-    if (studentData.hd !== "hyderabad.bits-pilani.ac.in") {
-      alert("Invalid Email. This portal is meant for BITS Pilani, Hyderabad Students only.")
-      return;
-    }
     let uniqueID = studentData.email.match(/^([^@]*)@/)[1]
     setUID(uniqueID)
     document.getElementById("google-oauth").hidden = true
@@ -25,7 +21,7 @@ export default function MainPage() {
 
 
   const [studentUID, setUID] = useState();
-  const [pageStatus,setPageStatus] = useState();
+  const [pageStatus, setPageStatus] = useState();
   const supabase = createClient(process.env.REACT_APP_SUPABASEURL, process.env.REACT_APP_SUPABASEKEY)
 
   return (
@@ -39,8 +35,8 @@ export default function MainPage() {
           setPageStatus(0)
         }
       }>Switch Account</button>
-      {pageStatus?<button onClick={() => {setPageStatus(!pageStatus)}}>Place Requests</button>:<button disabled={studentUID ? false : true} onClick={() => {setPageStatus(!pageStatus)}}>Approve Requests</button>}
-      {pageStatus?<ApproveReq studentUID={studentUID} supabase={supabase}></ApproveReq>:<PlaceReq studentUID={studentUID} supabase={supabase}></PlaceReq>}
+      {pageStatus ? <button onClick={() => { setPageStatus(!pageStatus) }}>Place Requests</button> : <button disabled={studentUID ? false : true} onClick={() => { setPageStatus(!pageStatus) }}>Approve Requests</button>}
+      {pageStatus ? <ApproveReq studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq studentUID={studentUID} supabase={supabase}></PlaceReq>}
     </>
   )
 }

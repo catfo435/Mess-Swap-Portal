@@ -9,6 +9,9 @@ const ReqSkeleton = (props) => (
     viewBox="0 0 250 250"
     backgroundColor="#cfe8f7"
     foregroundColor="#ecebeb"
+    style={{
+      opacity:0.20
+    }}
     {...props}
   >
     {/* <rect x="48" y="5" rx="3" ry="3" width="110" height="8" /> 

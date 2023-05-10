@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import Inputfield from './Inputfield'
+import Inputfield from '../Components/Inputfield'
 
 export default function PlaceReq(props) {
 
     const [student2UID, setUID2] = useState([])
 
-    async function handleSupabaseReq(){
+    async function handleSupabaseReq() {
         const supabase = props.supabase
-        const {error} = await supabase
+        const { error } = await supabase
             .from('messreq')
             .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID }])
 
         if (error) {
             //Sender column is set to unique, will give error 23505 if mess request is already placed
-            if (error.code === "23505"){ //Incase the localstorage gets cleared
+            if (error.code === "23505") { //Incase the localstorage gets cleared
                 alert("Cannot place more than one swap requests.")
-                localStorage.setItem(props.studentUID,true)
+                localStorage.setItem(props.studentUID, true)
                 return;
             }
             alert("Something went wrong.")
@@ -24,12 +24,12 @@ export default function PlaceReq(props) {
         }
 
         alert("Request has been sent. Wait for approval.")
-        localStorage.setItem(props.studentUID,true)
+        localStorage.setItem(props.studentUID, true)
     }
 
     function handleSubmitButton() {
 
-        if (localStorage.getItem(props.studentUID)){
+        if (localStorage.getItem(props.studentUID)) {
             alert("Cannot place more than one swap requests.")
             return;
         }
