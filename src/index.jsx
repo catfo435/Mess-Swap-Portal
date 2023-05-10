@@ -30,14 +30,14 @@ export default function MainPage() {
     <>
       <Header />
       <GoogleOAuth onSuccess={responseMessage} ></GoogleOAuth>
-      <button hidden={studentUID ? false : true} onClick={
+      <button className='customBtn' hidden={studentUID ? false : true} onClick={
         () => {
           document.getElementById("google-oauth").hidden = false
           setUID(false)
           setPageStatus(0)
         }
       }>Switch Account</button>
-      {pageStatus ? <button onClick={() => { setPageStatus(!pageStatus) }}>Place Requests</button> : <button disabled={studentUID ? false : true} onClick={() => { setPageStatus(!pageStatus) }}>Approve Requests</button>}
+      {pageStatus ? <button className='customBtn' onClick={() => { setPageStatus(!pageStatus) }}>Place Requests</button> : <button className='customBtn' disabled={studentUID ? false : true} onClick={() => { setPageStatus(!pageStatus) }}>Approve Requests</button>}
       {!(studentUID) || <h2>Welcome, {studentName}</h2>}
       {pageStatus ? <ApproveReq studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq studentUID={studentUID} supabase={supabase}></PlaceReq>}
     </>
