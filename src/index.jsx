@@ -16,11 +16,13 @@ export default function MainPage() {
     const studentData = jwt_decode(response.credential)
     let uniqueID = studentData.email.match(/^([^@]*)@/)[1]
     setUID(uniqueID)
+    setName(studentData.name)
     document.getElementById("google-oauth").hidden = true
   }
 
 
   const [studentUID, setUID] = useState();
+  const [studentName, setName] = useState();
   const [pageStatus, setPageStatus] = useState();
   const supabase = createClient(process.env.REACT_APP_SUPABASEURL, process.env.REACT_APP_SUPABASEKEY)
 
@@ -36,7 +38,7 @@ export default function MainPage() {
         }
       }>Switch Account</button>
       {pageStatus ? <button onClick={() => { setPageStatus(!pageStatus) }}>Place Requests</button> : <button disabled={studentUID ? false : true} onClick={() => { setPageStatus(!pageStatus) }}>Approve Requests</button>}
-      {pageStatus ? <ApproveReq studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq studentUID={studentUID} supabase={supabase}></PlaceReq>}
+      {pageStatus ? <ApproveReq studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq studentUID={studentUID} supabase={supabase} studentName={studentName}></PlaceReq>}
     </>
   )
 }

@@ -13,14 +13,14 @@ export default function PlaceReq(props) {
             .select()
             .eq("Sender", student2UID)
             .eq("Receiver", props.studentUID)
-        
-        if (data[0]){
+
+        if (data[0]) {
             alert(`You already have a pending Mess Swap request from ${student2UID}`)
             setUID2("")
             return;
         }
 
-        if (errorFetch){
+        if (errorFetch) {
             alert("Something went wrong.")
             console.error(errorFetch);
             return;
@@ -32,13 +32,13 @@ export default function PlaceReq(props) {
             .select()
             .eq("Sender", props.studentUID)
             .eq("Receiver", student2UID)
-        
-        if (dataGet[0]){
+
+        if (dataGet[0]) {
             alert("Duplicate Entry Found")
             return;
         }
-        
-        if (errorGet){
+
+        if (errorGet) {
             alert("Something went wrong.")
             console.error(errorGet);
             return;
@@ -83,8 +83,9 @@ export default function PlaceReq(props) {
 
     return (
         <>
-            <Inputfield id="UID1" value={props.studentUID ? props.studentUID : "Please Login"} disabled label="UID of Student 1"></Inputfield>
-            {!(props.studentUID) || <Inputfield id="UID2" value={student2UID} onChange={(e) => { setUID2(e.target.value) }} label="UID of Student 2"></Inputfield>}
+            {!(props.studentUID) || <Inputfield id="UID1" label="Name of Student 1" value={props.studentName} disabled />}
+            <Inputfield id="UID1" value={props.studentUID ? props.studentUID : "Please Login"} disabled label="UID of Student 1" />
+            {!(props.studentUID) || <Inputfield id="UID2" value={student2UID} onChange={(e) => { setUID2(e.target.value) }} label="UID of Student 2" />}
             <button onClick={handleSubmitButton}>Send Request</button>
         </>
     )
