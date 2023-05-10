@@ -31,7 +31,6 @@ export default function MainPage() {
   return (
     <>
       <Header />
-      <br></br>
       <GoogleOAuth onSuccess={responseMessage} ></GoogleOAuth>
       <button hidden={studentUID ? false : true} onClick={
         () => {
@@ -40,11 +39,7 @@ export default function MainPage() {
           setPageStatus(0)
         }
       }>Switch Account</button>
-      <br></br>
-      <br></br>
       {pageStatus?<button onClick={() => {setPageStatus(!pageStatus)}}>Place Requests</button>:<button disabled={studentUID ? false : true} onClick={() => {setPageStatus(!pageStatus)}}>Approve Requests</button>}
-      <br></br>
-      <br></br>
       {pageStatus?<ApproveReq studentUID={studentUID} supabase={supabase}></ApproveReq>:<PlaceReq studentUID={studentUID} supabase={supabase}></PlaceReq>}
     </>
   )

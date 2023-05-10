@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import RequestPane from './RequestPane'
+import ReqSkeleton from './ReqSkeleton'
 
 export default function ApproveReq(props) {
 
@@ -29,12 +30,29 @@ export default function ApproveReq(props) {
   }, [])
 
 
-  return data && (
-    <>
+  if (data){
+    return displayRequests()
+  }
+  else if (!data){
+    return displaySkeleton()
+  }
+
+
+  function displayRequests(){
+    return data && (
+      <>
       <h5>Pending requests for {props.studentUID}</h5>
       {data.map((request, index) => {
-        return <RequestPane sender={request.Sender} timestamp={request.time}></RequestPane>
+        return <RequestPane sender={request.Sender} timestamp={new Date(request.time).toLocaleString()}></RequestPane>
       })}
     </>
-  )
+    )
+  }
+
+  function displaySkeleton(){
+    return (<>
+      <h5>Pending requests for {props.studentUID}</h5>
+      <ReqSkeleton/>
+    </>)
+  }
 }
