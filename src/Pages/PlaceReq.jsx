@@ -8,13 +8,32 @@ export default function PlaceReq(props) {
     async function handleSupabaseReq() {
         const supabase = props.supabase
 
-        const { data, errorGet } = await supabase
+        const { data, errorFetch } = await supabase
+            .from('messreq')
+            .select()
+            .eq("Sender", student2UID)
+            .eq("Receiver", props.studentUID)
+        
+        if (data[0]){
+            alert(`You already have a pending Mess Swap request from ${student2UID}`)
+            setUID2("")
+            return;
+        }
+
+        if (errorFetch){
+            alert("Something went wrong.")
+            console.error(errorFetch);
+            return;
+        }
+
+
+        const { dataGet, errorGet } = await supabase
             .from('messreq')
             .select()
             .eq("Sender", props.studentUID)
             .eq("Receiver", student2UID)
         
-        if (data[0]){
+        if (dataGet[0]){
             alert("Duplicate Entry Found")
             return;
         }
