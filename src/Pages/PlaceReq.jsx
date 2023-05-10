@@ -101,7 +101,7 @@ export default function PlaceReq(props) {
 
     return (
         <>
-            {!(props.studentUID) || <Inputfield id="UID1" label="Name of Student 1" value={props.studentName} disabled />}
+            {!(props.studentUID) || <h2>Welcome, {props.studentName}</h2>}
             <Inputfield id="UID1" value={props.studentUID ? props.studentUID : "Please Login"} disabled label="UID of Student 1" />
             {!(props.studentUID) || <Inputfield id="UID2" value={student2UID} onChange={(e) => { setUID2(e.target.value) }} label="UID of Student 2" />}
             <button onClick={handleSubmitButton}>Send Request</button>
