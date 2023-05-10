@@ -10,7 +10,7 @@ const ReqSkeleton = (props) => (
     backgroundColor="#cfe8f7"
     foregroundColor="#ecebeb"
     style={{
-      opacity:0.20
+      opacity:0.35
     }}
     {...props}
   >

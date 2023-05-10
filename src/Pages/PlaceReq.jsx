@@ -4,11 +4,37 @@ import Inputfield from '../Components/Inputfield'
 export default function PlaceReq(props) {
 
     const [student2UID, setUID2] = useState([])
+    const supabase = props.supabase
 
-    async function handleSupabaseReq() {
-        const supabase = props.supabase
+    async function checkDuplicate() {
 
-        const { data, errorFetch } = await supabase
+        const { data, error } = await supabase
+            .from('messreq')
+            .select()
+            .eq("Sender", props.studentUID)
+            .eq("Receiver", student2UID)
+
+        if (data[0]) {
+            alert("Duplicate Entry Found")
+            return 0;
+        }
+        
+        if (error){
+            raiseError(error)
+            return 0
+        }
+
+        return 1
+    }
+
+    function raiseError(error) {
+        alert("Something went wrong.")
+        console.error(error);
+        return;
+    }
+
+    async function checkExistingReq(){
+        const { data, error } = await supabase
             .from('messreq')
             .select()
             .eq("Sender", student2UID)
@@ -17,31 +43,25 @@ export default function PlaceReq(props) {
         if (data[0]) {
             alert(`You already have a pending Mess Swap request from ${student2UID}`)
             setUID2("")
-            return;
+            return 0;
         }
 
-        if (errorFetch) {
-            alert("Something went wrong.")
-            console.error(errorFetch);
-            return;
+        if (error) {
+            raiseError(error)
+            return 0
         }
 
+        return 1
+    }
 
-        const { dataGet, errorGet } = await supabase
-            .from('messreq')
-            .select()
-            .eq("Sender", props.studentUID)
-            .eq("Receiver", student2UID)
+    async function handleSupabaseReq() {
 
-        if (dataGet[0]) {
-            alert("Duplicate Entry Found")
-            return;
+        if (!(await checkDuplicate())){
+            return 0;
         }
 
-        if (errorGet) {
-            alert("Something went wrong.")
-            console.error(errorGet);
-            return;
+        if (!(await checkExistingReq())){
+            return 0;
         }
 
         const { error } = await supabase
@@ -49,9 +69,7 @@ export default function PlaceReq(props) {
             .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID }])
 
         if (error) {
-            alert("Something went wrong.")
-            console.error(error);
-            return;
+            raiseError(error)
         }
 
         alert("Request has been sent. Wait for approval.")
