@@ -38,7 +38,7 @@ export default function MainPage() {
         }
       }>Switch Account</button>
       {pageStatus ? <button className='customBtn' onClick={() => { setPageStatus(!pageStatus) }}>Place Requests</button> : <button className='customBtn' disabled={studentUID ? false : true} onClick={() => { setPageStatus(!pageStatus) }}>Approve Requests</button>}
-      {!(studentUID) || <h2>Welcome, {studentName}</h2>}
+      {!(studentUID) || <h2>Welcome, <span style={{color:'cyan'}}>{studentName}</span></h2>}
       {pageStatus ? <ApproveReq studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq studentUID={studentUID} supabase={supabase}></PlaceReq>}
     </>
   )
