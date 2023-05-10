@@ -7,32 +7,39 @@ export default function PlaceReq(props) {
 
     async function handleSupabaseReq() {
         const supabase = props.supabase
+
+        const { data, errorGet } = await supabase
+            .from('messreq')
+            .select()
+            .eq("Sender", props.studentUID)
+            .eq("Receiver", student2UID)
+        
+        if (data[0]){
+            alert("Duplicate Entry Found")
+            return;
+        }
+        
+        if (errorGet){
+            alert("Something went wrong.")
+            console.error(errorGet);
+            return;
+        }
+
         const { error } = await supabase
             .from('messreq')
             .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID }])
 
         if (error) {
-            //Sender column is set to unique, will give error 23505 if mess request is already placed
-            if (error.code === "23505") { //Incase the localstorage gets cleared
-                alert("Cannot place more than one swap requests.")
-                localStorage.setItem(props.studentUID, true)
-                return;
-            }
             alert("Something went wrong.")
             console.error(error);
             return;
         }
 
         alert("Request has been sent. Wait for approval.")
-        localStorage.setItem(props.studentUID, true)
     }
 
     function handleSubmitButton() {
 
-        if (localStorage.getItem(props.studentUID)) {
-            alert("Cannot place more than one swap requests.")
-            return;
-        }
 
         if (!props.studentUID) {
             alert("Please Login first.")
