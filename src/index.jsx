@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import Header from './Header'
 import "./index.css"
-import jwt_decode from 'jwt-decode'
-import PlaceReq from './PlaceReq';
+
+import jwt_decode from 'jwt-decode';
+
 import GoogleOAuth from './GoogleOAuth';
+import PlaceReq from './PlaceReq'
+import ApproveReq from './ApproveReq'
+import Header from './Header'
 
 export default function MainPage() {
 
@@ -21,6 +24,7 @@ export default function MainPage() {
 
 
   const [studentUID, setUID] = useState();
+  const [pageStatus,setPageStatus] = useState();
 
   return (
     <>
@@ -31,11 +35,15 @@ export default function MainPage() {
         () => {
           document.getElementById("google-oauth").hidden = false
           setUID(false)
+          setPageStatus(0)
         }
       }>Switch Account</button>
       <br></br>
       <br></br>
-      <PlaceReq studentUID={studentUID}></PlaceReq>
+      {pageStatus?<button onClick={() => {setPageStatus(!pageStatus)}}>Place Requests</button>:<button disabled={studentUID ? false : true} onClick={() => {setPageStatus(!pageStatus)}}>Approve Requests</button>}
+      <br></br>
+      <br></br>
+      {pageStatus?<ApproveReq studentUID={studentUID}></ApproveReq>:<PlaceReq studentUID={studentUID}></PlaceReq>}
     </>
   )
 }

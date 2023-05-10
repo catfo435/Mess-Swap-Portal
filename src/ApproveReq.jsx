@@ -1,7 +1,9 @@
 import React from 'react'
 
-export default function ApproveReq() {
+export default function ApproveReq(props) {
   return (
-    <div>ApproveReq</div>
+    <>
+      <h5>Pending requests for {props.studentUID}</h5>
+    </>
   )
 }
