@@ -41,7 +41,7 @@ export default function ApproveReq(props) {
   function displayRequests() {
     return data && (
       <>
-        <h5>Pending requests for {props.studentUID}</h5>
+        <h3>Pending requests</h3>
         {data.map((request, index) => {
           return <RequestPane sender={request.Sender} timestamp={new Date(request.time).toLocaleString()}></RequestPane>
         })}
@@ -51,7 +51,7 @@ export default function ApproveReq(props) {
 
   function displaySkeleton() {
     return (<>
-      <h5>Pending requests for {props.studentUID}</h5>
+      <h3>Pending requests</h3>
       <ReqSkeleton />
     </>)
   }
