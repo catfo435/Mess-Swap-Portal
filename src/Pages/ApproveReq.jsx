@@ -32,7 +32,6 @@ export default function ApproveReq(props) {
   }
 
   async function handleReqPaneClick(e) {
-    console.log(data, e.target.id);
     const approvedData = data[e.target.id]
     async function deleteOtherReqs() {
 
