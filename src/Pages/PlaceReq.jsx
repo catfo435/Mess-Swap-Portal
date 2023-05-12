@@ -1,51 +1,15 @@
 import React, { useState } from 'react';
 import Inputfield from '../Components/Inputfield'
-import { toast, ToastContainer } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
+import MessButton from '../Components/MessButton';
+import ToastFunctions from '../Components/ToastFunctions';
 
 export default function PlaceReq(props) {
 
     const [student2UID, setUID2] = useState([])
+    const [mess, setMess] = useState(false)
     const supabase = props.supabase
-
-    function toastWarn(message){
-        toast.warn(message, {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark"
-            })
-    }
-
-    function toastError(message){
-        toast.error(message, {
-            position: "bottom-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark"
-            })
-    }
-
-    function toastSuccess(message){
-        toast.success(message, {
-            position: "bottom-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark"
-            })
-    }
+    const toastFunctions = new ToastFunctions()
 
     async function checkDuplicate() {
 
@@ -56,7 +20,7 @@ export default function PlaceReq(props) {
             .eq("Receiver", student2UID)
 
         if (data[0]) {
-            toastWarn('Duplicate Entry')
+            toastFunctions.warn('Duplicate Entry')
             return 0;
         }
 
@@ -69,7 +33,7 @@ export default function PlaceReq(props) {
     }
 
     function raiseError(error) {
-        toastError("Something went wrong.")
+        toastFunctions.error("Something went wrong.")
         console.error(error);
         return;
     }
@@ -82,7 +46,7 @@ export default function PlaceReq(props) {
             .eq("Receiver", props.studentUID)
 
         if (data[0]) {
-            toastWarn(`You already have a pending Mess Swap request from ${student2UID}`)
+            toastFunctions.warn(`You already have a pending Mess Swap request from ${student2UID}`)
             setUID2("")
             return 0;
         }
@@ -107,31 +71,37 @@ export default function PlaceReq(props) {
 
         const { error } = await supabase
             .from('messreq')
-            .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID }])
+            .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID, Mess: mess}])
 
         if (error) {
             raiseError(error)
         }
-
-        toastSuccess("Request has been sent. Wait for approval.")
+        else{
+            toastFunctions.success("Request has been sent. Wait for approval.")
+        }
     }
 
     function handleSubmitButton() {
 
 
         if (!props.studentUID) {
-            toastWarn("Please Login first.")
+            toastFunctions.warn("Please Login first.")
             return;
         };
+
+        if (!mess){
+            toastFunctions.warn("Select your current Mess")
+            return;
+        }
         const regexPattern = /(^f[0-9]{8}$)|(^h[0-9]{11}$)/
         if (!(regexPattern.test(student2UID))) {
-            toastWarn("Wrong UID format, Please Enter Again")
+            toastFunctions.warn("Wrong UID format, Please Enter Again")
             setUID2("")
             return
         }
 
         if (student2UID === props.studentUID) {
-            toastWarn("You cant swap a mess with yourself.")
+            toastFunctions.warn("You cant swap a mess with yourself.")
             setUID2("")
             return
         }
@@ -140,10 +110,16 @@ export default function PlaceReq(props) {
         handleSupabaseReq()
     }
 
+    function handleMessButton(e){
+        console.log(e.target.value);
+        setMess(e.target.value)
+    }
+
     return (
         <>
             <Inputfield id="UID1" value={props.studentUID ? props.studentUID : "Please Login"} disabled label="UID of Student 1" />
             {!(props.studentUID) || <Inputfield id="UID2" value={student2UID} onChange={(e) => { setUID2(e.target.value) }} label="UID of Student 2" />}
+            {!(props.studentUID) || <MessButton id="MessHave" onChange={handleMessButton}/>}
             <button className='customBtn' onClick={handleSubmitButton}>Send Request</button>
             <ToastContainer limit={2}/>
         </>

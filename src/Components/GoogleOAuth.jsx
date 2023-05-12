@@ -1,23 +1,15 @@
-import React, { useState , useEffect } from 'react'
-import GoogleSkeleton from './GoogleSkeleton';
+import React, { useEffect } from 'react'
 
 export default function GoogleOAuth(props) {
-    
-    const [loadState,setLoadState] = useState(false)
 
     useEffect(() => {
         /* global google */
         if (!window.google){
-            return
-        }
-        else if (window.google && !loadState){
-            setLoadState(true)
-            return
+            window.location.reload()
         }
         google.accounts.id.initialize({
             client_id: process.env.REACT_APP_CLIENTID,
             callback: props.onSuccess,
-            auto_select: true,
             hosted_domain:"hyderabad.bits-pilani.ac.in",
         })
 
@@ -28,11 +20,9 @@ export default function GoogleOAuth(props) {
             document.getElementById("google-oauth"),
             { theme: "filled_black", shape:"circle",size: "large", string:"continue_with" }
         )
-    },[loadState]);
+    },[]);
 
     return (
-        <>
-        {loadState?<div id='google-oauth'></div>:<><GoogleSkeleton /><span>Loading...</span></>}
-        </>
+        <div id='google-oauth'></div>
     )
 }

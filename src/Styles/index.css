@@ -32,11 +32,30 @@ background-clip: text;
 -webkit-text-fill-color: transparent;
 } */
 
+#root .requestBox{
+    display: inline-block;
+    opacity: 0.80;
+    border: 2px solid cyan;
+    border-radius: 10px;
+    margin: auto 5px 1px;
+    width: 200px;
+}
+
+#root .requestBox:hover{
+    opacity: 1;
+    border-color: #FF5733;
+    cursor: pointer;
+}
+
+#root .requestBox:disabled{
+    border-color: #00FF00;
+}
+
 #root input[type=text]:disabled {
     background-color: #D3D3D3;
 }
 
-#root input {
+#root input[type=text] {
     border-radius: 10px;
     height: 30px;
     width: 250px;
