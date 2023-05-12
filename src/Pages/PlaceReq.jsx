@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import Inputfield from '../Components/Inputfield'
 import { ToastContainer } from 'react-toastify';
-import MessButton from '../Components/MessButton';
 import ToastFunctions from '../Components/ToastFunctions';
 
 export default function PlaceReq(props) {
 
     const [student2UID, setUID2] = useState([])
-    const [mess, setMess] = useState(false)
     const supabase = props.supabase
     const toastFunctions = new ToastFunctions()
 
@@ -71,12 +69,12 @@ export default function PlaceReq(props) {
 
         const { error } = await supabase
             .from('messreq')
-            .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID, Mess: mess}])
+            .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID, Mess: props.mess }])
 
         if (error) {
             raiseError(error)
         }
-        else{
+        else {
             toastFunctions.success("Request has been sent. Wait for approval.")
         }
     }
@@ -89,7 +87,7 @@ export default function PlaceReq(props) {
             return;
         };
 
-        if (!mess){
+        if (!props.mess) {
             toastFunctions.warn("Select your current Mess")
             return;
         }
@@ -110,18 +108,12 @@ export default function PlaceReq(props) {
         handleSupabaseReq()
     }
 
-    function handleMessButton(e){
-        console.log(e.target.value);
-        setMess(e.target.value)
-    }
-
     return (
         <>
             <Inputfield id="UID1" value={props.studentUID ? props.studentUID : "Please Login"} disabled label="UID of Student 1" />
             {!(props.studentUID) || <Inputfield id="UID2" value={student2UID} onChange={(e) => { setUID2(e.target.value) }} label="UID of Student 2" />}
-            {!(props.studentUID) || <MessButton id="MessHave" onChange={handleMessButton}/>}
             <button className='customBtn' onClick={handleSubmitButton}>Send Request</button>
-            <ToastContainer limit={2}/>
+            <ToastContainer limit={2} />
         </>
     )
 }

@@ -5,6 +5,7 @@ export default function GoogleOAuth(props) {
     useEffect(() => {
         /* global google */
         if (!window.google){
+            console.log("test");
             window.location.reload()
         }
         google.accounts.id.initialize({

@@ -22,6 +22,7 @@ export default function ApproveReq(props) {
       .from('messreq')
       .select()
       .eq("Receiver", props.studentUID)
+      .neq("Mess",parseInt(props.mess))
 
 
     if (error) {
@@ -33,7 +34,6 @@ export default function ApproveReq(props) {
   async function handleReqPaneClick(e) {
     console.log(data, e.target.id);
     const approvedData = data[e.target.id]
-    console.log(approvedData);
     async function deleteOtherReqs() {
 
       try {
@@ -74,8 +74,9 @@ export default function ApproveReq(props) {
 
 
   useEffect(() => {
+    setData(false)
     fetchReqs()
-  }, [])
+  }, [props.mess])
 
 
   if (data) {
