@@ -25,6 +25,20 @@ body {
     margin-bottom: 20px;
     align-self: center;   
 }
+
+#root .approvereject{
+    border-radius: 10px;
+    height: 30px; 
+}
+
+#root #approve{
+    background-color: #00ff00;
+}
+
+#root #reject{
+    background-color: #ff0000;
+}
+
 /* 
 #root h1 {
 background: -webkit-linear-gradient(red, #FFA500);
@@ -39,6 +53,7 @@ background-clip: text;
     border-radius: 10px;
     margin: auto 5px 1px;
     width: 200px;
+    height: 150px;
 }
 
 #root .requestBox:hover{

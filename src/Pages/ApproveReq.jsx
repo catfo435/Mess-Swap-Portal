@@ -22,17 +22,34 @@ export default function ApproveReq(props) {
       .from('messreq')
       .select()
       .eq("Receiver", props.studentUID)
-      .neq("Mess",parseInt(props.mess))
+      .eq("Rejected",false)
+      .neq("Mess", parseInt(props.mess))
 
 
     if (error) {
-      raiseError()
+      raiseError(error)
     }
     setData(data)
   }
 
-  async function handleReqPaneClick(e) {
-    const approvedData = data[e.target.id]
+  async function handleReqPaneClick(e, condition,id) {
+
+    if (condition === "Reject") {
+      const rejectedData = data[id]
+      try {
+        await supabase
+          .from('messreq')
+          .update({Rejected:true})
+          .eq("id", rejectedData.id)
+        toastFunctions.success(`Mess Swap request from ${rejectedData.Sender} rejected`)
+        return
+      }
+      catch (e) {
+        raiseError()
+      }
+    }
+
+    const approvedData = data[id]
     async function deleteOtherReqs() {
 
       try {
@@ -74,7 +91,9 @@ export default function ApproveReq(props) {
 
   useEffect(() => {
     setData(false)
-    fetchReqs()
+    if (props.mess) {
+      fetchReqs()
+    }
   }, [props.mess])
 
 

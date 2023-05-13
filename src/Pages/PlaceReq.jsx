@@ -18,6 +18,10 @@ export default function PlaceReq(props) {
             .eq("Receiver", student2UID)
 
         if (data[0]) {
+            if (data[0].Rejected) {
+                toastFunctions.error("Mess Swap Request was rejected")
+                return 0;
+            }
             toastFunctions.warn('Duplicate Entry')
             return 0;
         }
@@ -44,6 +48,10 @@ export default function PlaceReq(props) {
             .eq("Receiver", props.studentUID)
 
         if (data[0]) {
+            if (data[0].Rejected) {
+                toastFunctions.error("Mess Swap Request was rejected")
+                return 0;
+            }
             toastFunctions.warn(`You already have a pending Mess Swap request from ${student2UID}`)
             setUID2("")
             return 0;
@@ -59,6 +67,7 @@ export default function PlaceReq(props) {
 
     async function handleSupabaseReq() {
 
+
         if (!(await checkDuplicate())) {
             return 0;
         }
@@ -67,15 +76,15 @@ export default function PlaceReq(props) {
             return 0;
         }
 
-        const { error } = await supabase
-            .from('messreq')
-            .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID, Mess: props.mess }])
-
-        if (error) {
-            raiseError(error)
-        }
-        else {
+        try {
+            await supabase
+                .from('messreq')
+                .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID, Mess: props.mess }])
             toastFunctions.success("Request has been sent. Wait for approval.")
+        }
+
+        catch (error) {
+            raiseError(error)
         }
     }
 
