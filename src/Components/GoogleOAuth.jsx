@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import GoogleSkeleton from './GoogleSkeleton'
 
 export default function GoogleOAuth(props) {
 
