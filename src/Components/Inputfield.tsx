@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 
-export default class Inputfield extends Component {
+type InputfieldProps = {
+  id:string,
+  onChange: React.ChangeEventHandler<HTMLInputElement>,
+  label:string,
+  value:string,
+  disabled:boolean
+}
+
+export default class Inputfield extends Component<InputfieldProps> {
 
   render() {
     return (

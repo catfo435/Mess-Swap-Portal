@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 
 export default class ToastFunctions {
 
-    warn(message) {
+    warn(message:string) {
         toast.warn(message, {
             position: "top-center",
             autoClose: 2000,
@@ -15,7 +15,7 @@ export default class ToastFunctions {
         })
     }
 
-    error(message) {
+    error(message:string) {
         toast.error(message, {
             position: "bottom-center",
             autoClose: 2000,
@@ -28,7 +28,7 @@ export default class ToastFunctions {
         })
     }
 
-    success(message) {
+    success(message:string) {
         toast.success(message, {
             position: "bottom-right",
             autoClose: 2000,

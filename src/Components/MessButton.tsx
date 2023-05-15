@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 
-export default class MessButton extends Component {
+type MessButtonProps = {
+  id:string,
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+}
+
+export default class MessButton extends Component<MessButtonProps> {
 
   render() {
     return (

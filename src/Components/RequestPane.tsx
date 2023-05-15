@@ -1,6 +1,15 @@
 import React, { useState } from 'react'
 
-export default function RequestPane(props) {
+type RequestPaneProps = {
+    id:string,
+    mess:number,
+    sender: string,
+    onClick:Function,
+    timestamp:string
+}
+
+
+export default function RequestPane(props: RequestPaneProps) {
 
     const [activeState,setactiveState] = useState(false)
 
