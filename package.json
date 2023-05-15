@@ -23,6 +23,9 @@
     "typescript": "^5.0.4",
     "web-vitals": "^2.1.4"
   },
+  "overrides": {
+    "typescript": "^5.0.4"
+  },
   "scripts": {
     "convert-ts": "tsc:w: tsc -w",
     "start": "react-scripts start",

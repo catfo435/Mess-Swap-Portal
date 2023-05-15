@@ -4,14 +4,25 @@ import ReqSkeleton from '../Components/ReqSkeleton'
 import { ToastContainer } from 'react-toastify';
 import ToastFunctions from '../Components/ToastFunctions';
 
-export default function ApproveReq(props) {
+
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Database, MessReqRow } from '../database.types'
+
+type ApproveReqProps = {
+  supabase : SupabaseClient<Database>,
+  studentUID : string,
+  mess: string,
+
+}
+
+export default function ApproveReq(props: ApproveReqProps) {
 
 
-  const [data, setData] = useState()
+  const [data, setData] = useState<Array<MessReqRow> | null>()
   const supabase = props.supabase
   const toastFunctions = new ToastFunctions()
 
-  function raiseError(error) {
+  function raiseError(error : any) {
     toastFunctions.error("Something went wrong.")
     console.error(error);
     return;
@@ -32,10 +43,10 @@ export default function ApproveReq(props) {
     setData(data)
   }
 
-  async function handleReqPaneClick(e, condition,id) {
+  async function handleReqPaneClick(e: React.ChangeEventHandler<HTMLButtonElement>, condition :string,id:number) {
 
     if (condition === "Reject") {
-      const rejectedData = data[id]
+      const rejectedData = data![id]
       try {
         await supabase
           .from('messreq')
@@ -45,11 +56,11 @@ export default function ApproveReq(props) {
         return
       }
       catch (e) {
-        raiseError()
+        raiseError(e)
       }
     }
 
-    const approvedData = data[id]
+    const approvedData = data![id]
     async function deleteOtherReqs() {
 
       try {
@@ -59,7 +70,7 @@ export default function ApproveReq(props) {
           .eq("Sender", props.studentUID)
       }
       catch (e) {
-        raiseError()
+        raiseError(e)
       }
 
       const { error } = await supabase
@@ -69,7 +80,7 @@ export default function ApproveReq(props) {
         .neq("id", approvedData.id)
 
       if (error) {
-        raiseError()
+        raiseError(error)
       }
       else {
         toastFunctions.success("Mess swap has been approved. Contact SWD for further details.")
@@ -84,13 +95,13 @@ export default function ApproveReq(props) {
       .eq("id", approvedData.id)
 
     if (error) {
-      raiseError()
+      raiseError(error)
     }
   }
 
 
   useEffect(() => {
-    setData(false)
+    setData(null)
     if (props.mess) {
       fetchReqs()
     }

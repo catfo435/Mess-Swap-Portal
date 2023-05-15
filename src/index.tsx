@@ -8,8 +8,10 @@ import jwt_decode from 'jwt-decode';
 import { createClient } from '@supabase/supabase-js';
 import { ToastContainer } from 'react-toastify';
 import ToastFunctions from './Components/ToastFunctions';
+import { GoogleLogin, GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
 
-import GoogleOAuth from './Components/GoogleOAuth';
+import { Database } from './database.types';
+
 import PlaceReq from './Pages/PlaceReq'
 import ApproveReq from './Pages/ApproveReq'
 import Header from './Components/Header'
@@ -24,7 +26,6 @@ export default function MainPage() {
     let uniqueID = studentData.email.match(/^([^@]*)@/)[1]
     setUID(uniqueID)
     setName(studentData.name)
-    document.getElementById("google-oauth").hidden = true
   }
 
   function handleSectionSwap() {
@@ -37,7 +38,7 @@ export default function MainPage() {
   const [studentName, setName] = useState();
   const [mess, setMess] = useState(false)
   const [pageStatus, setPageStatus] = useState();
-  const supabase = createClient(process.env.REACT_APP_SUPABASEURL, process.env.REACT_APP_SUPABASEKEY)
+  const supabase = createClient<Database>(process.env.REACT_APP_SUPABASEURL!, process.env.REACT_APP_SUPABASEKEY!)
 
 
   function handleMessButton(e) {
@@ -61,9 +62,9 @@ export default function MainPage() {
 
     if (data[0]) {
       toastFunctions.warn("Mess Swapped Already, cannot place another request.")
-      setTimeout(()=>{
+      setTimeout(() => {
         window.location.replace("https://swd.bits-hyderabad.ac.in")
-      },3000)
+      }, 3000)
     }
   }
 
@@ -72,23 +73,33 @@ export default function MainPage() {
     checkMessApproved("Receiver")
   }, [studentUID])
 
-
   return (
     <>
       <Header />
-      <GoogleOAuth onSuccess={responseMessage} ></GoogleOAuth>
-      <button className='customBtn' hidden={studentUID ? false : true} onClick={
-        () => {
-          document.getElementById("google-oauth").hidden = false
-          setUID(false)
-          setPageStatus(0)
-        }
-      }>Switch Account</button>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENTID}><GoogleLogin
+        onSuccess={responseMessage}
+        onError={() => {
+          toastFunctions.error('Login Failed');
+        }}
+        theme= "filled_black"
+        shape= "circle"
+        size= "large"
+        text= "continue_with"
+        hosted_domain='hyderabad.bits-pilani.ac.in'
+        useOneTap
+      />
+        <button className='customBtn' hidden={studentUID ? false : true} onClick={
+          () => {
+            googleLogout()
+            setUID(false)
+            setPageStatus(0)
+          }
+        }>Switch Account</button></GoogleOAuthProvider>
       {pageStatus ? <button className='customBtn' onClick={handleSectionSwap}>Place Requests</button> : <button className='customBtn' disabled={studentUID ? false : true} onClick={handleSectionSwap}>Approve Requests</button>}
       {!(studentUID) || <h2>Welcome, <span style={{ color: 'cyan' }}>{studentName}</span></h2>}
       {!(studentUID) || <MessButton id="MessHave" onChange={handleMessButton} />}
       {pageStatus ? <ApproveReq mess={mess} studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq mess={mess} studentUID={studentUID} supabase={supabase}></PlaceReq>}
-      <ToastContainer limit={2}/>
+      <ToastContainer limit={2} />
     </>
   )
 }
