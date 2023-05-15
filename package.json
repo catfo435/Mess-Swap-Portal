@@ -27,7 +27,6 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "convert-ts": "tsc:w: tsc -w",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -6,15 +6,17 @@ import ToastFunctions from '../Components/ToastFunctions';
 
 
 import { SupabaseClient } from '@supabase/supabase-js';
-import { Database, MessReqRow } from '../database.types'
+import { Database } from '../database.types'
 
 type ApproveReqProps = {
   supabase : SupabaseClient<Database>,
   studentUID : string,
-  mess: number | boolean,
+  mess: string | boolean,
 }
 
-export default function ApproveReq(props: ApproveReqProps) {
+type MessReqRow = Database['public']['Tables']['messreq']['Row']
+
+export default function ApproveReq(props: ApproveReqProps){
 
 
   const [data, setData] = useState<Array<MessReqRow> | null>()
@@ -33,7 +35,7 @@ export default function ApproveReq(props: ApproveReqProps) {
       .select()
       .eq("Receiver", props.studentUID)
       .eq("Rejected",false)
-      .neq("Mess", parseInt(props.mess))
+      .neq("Mess", parseInt(props.mess as string))
 
 
     if (error) {
@@ -113,14 +115,17 @@ export default function ApproveReq(props: ApproveReqProps) {
   else if (!data) {
     return displaySkeleton()
   }
+  else{
+    return null
+  }
 
 
-  function displayRequests() {
-    return data && (
+  function displayRequests(){
+    return data! && (
       <div>
         <h3>Pending requests</h3>
         {data.map((request, index) => {
-          return <RequestPane id={`${index}`} sender={request.Sender} timestamp={new Date(request.time).toLocaleString()} mess={request.Mess} onClick={handleReqPaneClick}></RequestPane>
+          return <RequestPane id={`${index}`} sender={request.Sender} timestamp={new Date(request.time).toLocaleString()} mess={String(request.Mess)} onClick={handleReqPaneClick}></RequestPane>
         })}
         <ToastContainer limit={2} />
       </div>

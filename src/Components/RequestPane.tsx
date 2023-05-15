@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 type RequestPaneProps = {
     id:string,
-    mess:number,
+    mess:string,
     sender: string,
     onClick:Function,
     timestamp:string

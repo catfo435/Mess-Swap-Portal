@@ -8,7 +8,7 @@ import jwt_decode from 'jwt-decode';
 import { createClient } from '@supabase/supabase-js';
 import { ToastContainer } from 'react-toastify';
 import ToastFunctions from './Components/ToastFunctions';
-import { GoogleLogin, GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
+import { CredentialResponse, GoogleLogin, GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
 
 import { Database } from './database.types';
 
@@ -21,8 +21,8 @@ export default function MainPage() {
 
   const toastFunctions = new ToastFunctions()
 
-  const responseMessage = (response) => {
-    const studentData = jwt_decode(response.credential)
+  const responseMessage = (response : CredentialResponse) => {
+    const studentData: any = jwt_decode(response.credential!)
     let uniqueID = studentData.email.match(/^([^@]*)@/)[1]
     setUID(uniqueID)
     setName(studentData.name)
@@ -36,13 +36,13 @@ export default function MainPage() {
 
   const [studentUID, setUID] = useState<string>("");
   const [studentName, setName] = useState<string>("");
-  const [mess, setMess] = useState<number | boolean>(false)
+  const [mess, setMess] = useState<string | boolean>(false)
   const [pageStatus, setPageStatus] = useState<boolean>(false);
   const supabase = createClient<Database>(process.env.REACT_APP_SUPABASEURL!, process.env.REACT_APP_SUPABASEKEY!)
 
 
-  function handleMessButton(e:React. <HTMLButtonElement>) {
-    setMess(e.target.value)
+  function handleMessButton(e: React.ChangeEvent<HTMLInputElement>) {
+    setMess((e.target as HTMLInputElement).value)
   }
 
   async function checkMessApproved(conditon:string) {
