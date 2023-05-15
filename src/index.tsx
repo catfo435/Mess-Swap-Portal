@@ -34,18 +34,18 @@ export default function MainPage() {
     setPageStatus(!pageStatus)
   }
 
-  const [studentUID, setUID] = useState();
-  const [studentName, setName] = useState();
-  const [mess, setMess] = useState(false)
-  const [pageStatus, setPageStatus] = useState();
+  const [studentUID, setUID] = useState<string>("");
+  const [studentName, setName] = useState<string>("");
+  const [mess, setMess] = useState<number | boolean>(false)
+  const [pageStatus, setPageStatus] = useState<boolean>(false);
   const supabase = createClient<Database>(process.env.REACT_APP_SUPABASEURL!, process.env.REACT_APP_SUPABASEKEY!)
 
 
-  function handleMessButton(e) {
+  function handleMessButton(e:React. <HTMLButtonElement>) {
     setMess(e.target.value)
   }
 
-  async function checkMessApproved(conditon) {
+  async function checkMessApproved(conditon:string) {
     if (!studentUID) return
     let condition = conditon
     const { data, error } = await supabase
@@ -76,7 +76,7 @@ export default function MainPage() {
   return (
     <>
       <Header />
-      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENTID}><GoogleLogin
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENTID!}><GoogleLogin
         onSuccess={responseMessage}
         onError={() => {
           toastFunctions.error('Login Failed');
@@ -91,8 +91,8 @@ export default function MainPage() {
         <button className='customBtn' hidden={studentUID ? false : true} onClick={
           () => {
             googleLogout()
-            setUID(false)
-            setPageStatus(0)
+            setUID("")
+            setPageStatus(false)
           }
         }>Switch Account</button></GoogleOAuthProvider>
       {pageStatus ? <button className='customBtn' onClick={handleSectionSwap}>Place Requests</button> : <button className='customBtn' disabled={studentUID ? false : true} onClick={handleSectionSwap}>Approve Requests</button>}
@@ -104,7 +104,7 @@ export default function MainPage() {
   )
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
   <MainPage />
 );

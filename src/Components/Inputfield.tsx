@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 
 type InputfieldProps = {
   id:string,
-  onChange: React.ChangeEventHandler<HTMLInputElement>,
+  onChange?: React.ChangeEventHandler<HTMLInputElement>,
   label:string,
   value:string,
-  disabled:boolean
+  disabled?:boolean
 }
 
 export default class Inputfield extends Component<InputfieldProps> {

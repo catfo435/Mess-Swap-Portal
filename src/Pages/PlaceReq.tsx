@@ -2,10 +2,18 @@ import React, { useState } from 'react';
 import Inputfield from '../Components/Inputfield'
 import { ToastContainer } from 'react-toastify';
 import ToastFunctions from '../Components/ToastFunctions';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Database } from '../database.types';
 
-export default function PlaceReq(props) {
+type PlaceReqProps = {
+    supabase : SupabaseClient<Database>,
+    studentUID : string,
+    mess: number | boolean,
+  }
 
-    const [student2UID, setUID2] = useState([])
+export default function PlaceReq(props: PlaceReqProps) {
+
+    const [student2UID, setUID2] = useState<string>()
     const supabase = props.supabase
     const toastFunctions = new ToastFunctions()
 
@@ -17,8 +25,8 @@ export default function PlaceReq(props) {
             .eq("Sender", props.studentUID)
             .eq("Receiver", student2UID)
 
-        if (data[0]) {
-            if (data[0].Rejected) {
+        if (data![0]) {
+            if (data![0].Rejected) {
                 toastFunctions.error("Mess Swap Request was rejected")
                 return 0;
             }
@@ -34,7 +42,7 @@ export default function PlaceReq(props) {
         return 1
     }
 
-    function raiseError(error) {
+    function raiseError(error : any) {
         toastFunctions.error("Something went wrong.")
         console.error(error);
         return;
@@ -47,8 +55,8 @@ export default function PlaceReq(props) {
             .eq("Sender", student2UID)
             .eq("Receiver", props.studentUID)
 
-        if (data[0]) {
-            if (data[0].Rejected) {
+        if (data![0]) {
+            if (data![0].Rejected) {
                 toastFunctions.error("Mess Swap Request was rejected")
                 return 0;
             }
@@ -79,7 +87,7 @@ export default function PlaceReq(props) {
         try {
             await supabase
                 .from('messreq')
-                .insert([{ time: new Date().toISOString(), Receiver: student2UID, Sender: props.studentUID, Mess: props.mess }])
+                .insert([{ time: new Date().toISOString(), Receiver: student2UID!, Sender: props.studentUID, Mess: props.mess }])
             toastFunctions.success("Request has been sent. Wait for approval.")
         }
 
@@ -101,7 +109,7 @@ export default function PlaceReq(props) {
             return;
         }
         const regexPattern = /(^f[0-9]{8}$)|(^h[0-9]{11}$)/
-        if (!(regexPattern.test(student2UID))) {
+        if (!(regexPattern.test(student2UID!))) {
             toastFunctions.warn("Wrong UID format, Please Enter Again")
             setUID2("")
             return
@@ -120,7 +128,7 @@ export default function PlaceReq(props) {
     return (
         <>
             <Inputfield id="UID1" value={props.studentUID ? props.studentUID : "Please Login"} disabled label="UID of Student 1" />
-            {!(props.studentUID) || <Inputfield id="UID2" value={student2UID} onChange={(e) => { setUID2(e.target.value) }} label="UID of Student 2" />}
+            {!(props.studentUID) || <Inputfield id="UID2" value={student2UID!} onChange={(e) => { setUID2(e.target.value) }} label="UID of Student 2" />}
             <button className='customBtn' onClick={handleSubmitButton}>Send Request</button>
             <ToastContainer limit={2} />
         </>

@@ -11,8 +11,7 @@ import { Database, MessReqRow } from '../database.types'
 type ApproveReqProps = {
   supabase : SupabaseClient<Database>,
   studentUID : string,
-  mess: string,
-
+  mess: number | boolean,
 }
 
 export default function ApproveReq(props: ApproveReqProps) {
