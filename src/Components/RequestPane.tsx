@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 type RequestPaneProps = {
     id:string,
     mess:string,
+    senderName: string,
     sender: string,
     onClick:Function,
     timestamp:string
@@ -17,7 +18,8 @@ export default function RequestPane(props: RequestPaneProps) {
         <div id={props.id} className='requestBox' onClick={()=>{
             setactiveState(!activeState)
         }}>
-            <h3 style={{color:"#8da4e3"}}>{props.sender}</h3>
+            <h3 style={{color:"#8da4e3"}}>{props.senderName}</h3>
+            <h6 style={{color:"#8da4e3"}}>{`(${props.sender})`}</h6>
             <h4>{`Has Mess ${props.mess}`}</h4>
             {activeState?<><button className='approvereject' id='approve' onClick={(e)=>{
                 props.onClick(e,"Approve",props.id)

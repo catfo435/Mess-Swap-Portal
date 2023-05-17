@@ -7,6 +7,7 @@ import { Database } from '../database.types';
 
 type PlaceReqProps = {
     supabase : SupabaseClient<Database>,
+    studentName : string,
     studentUID : string,
     mess: string | boolean,
   }
@@ -87,7 +88,7 @@ export default function PlaceReq(props: PlaceReqProps) {
         try {
             await supabase
                 .from('messreq')
-                .insert([{ time: new Date().toISOString(), Receiver: student2UID!, Sender: props.studentUID, Mess: parseInt(props.mess as string)}])
+                .insert([{ time: new Date().toISOString(),Name: props.studentName, Receiver: student2UID!, Sender: props.studentUID, Mess: parseInt(props.mess as string)}])
             toastFunctions.success("Request has been sent. Wait for approval.")
         }
 

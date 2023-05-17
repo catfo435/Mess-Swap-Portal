@@ -10,6 +10,7 @@ import { Database } from '../database.types'
 
 type ApproveReqProps = {
   supabase : SupabaseClient<Database>,
+  studentName : string,
   studentUID : string,
   mess: string | boolean,
 }
@@ -125,7 +126,7 @@ export default function ApproveReq(props: ApproveReqProps){
       <div>
         <h3>Pending requests</h3>
         {data.map((request, index) => {
-          return <RequestPane id={`${index}`} sender={request.Sender} timestamp={new Date(request.time).toLocaleString()} mess={String(request.Mess)} onClick={handleReqPaneClick}></RequestPane>
+          return <RequestPane id={`${index}`} senderName={request.Name} sender={request.Sender} timestamp={new Date(request.time).toLocaleString()} mess={String(request.Mess)} onClick={handleReqPaneClick}></RequestPane>
         })}
         <ToastContainer limit={2} />
       </div>

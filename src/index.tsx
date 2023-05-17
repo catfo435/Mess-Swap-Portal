@@ -98,7 +98,7 @@ export default function MainPage() {
       {pageStatus ? <button className='customBtn' onClick={handleSectionSwap}>Place Requests</button> : <button className='customBtn' disabled={studentUID ? false : true} onClick={handleSectionSwap}>Approve Requests</button>}
       {!(studentUID) || <h2>Welcome, <span style={{ color: 'cyan' }}>{studentName}</span></h2>}
       {!(studentUID) || <MessButton id="MessHave" onChange={handleMessButton} />}
-      {pageStatus ? <ApproveReq mess={mess} studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq mess={mess} studentUID={studentUID} supabase={supabase}></PlaceReq>}
+      {pageStatus ? <ApproveReq studentName = {studentName} mess={mess} studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq studentName={studentName} mess={mess} studentUID={studentUID} supabase={supabase}></PlaceReq>}
       <ToastContainer limit={2} />
     </>
   )

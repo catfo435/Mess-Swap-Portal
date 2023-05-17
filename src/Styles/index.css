@@ -48,12 +48,12 @@ background-clip: text;
 
 #root .requestBox{
     display: inline-block;
-    opacity: 0.80;
+    opacity: 0.70;
     border: 2px solid cyan;
     border-radius: 10px;
     margin: auto 5px 1px;
     width: 200px;
-    height: 150px;
+    height: 180px;
 }
 
 #root .requestBox:hover{
