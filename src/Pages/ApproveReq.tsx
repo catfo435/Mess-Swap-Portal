@@ -7,6 +7,7 @@ import ToastFunctions from '../Components/ToastFunctions';
 
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '../database.types'
+import OutgoingReq from './OutgoingReq';
 
 type ApproveReqProps = {
   supabase : SupabaseClient<Database>,
@@ -15,14 +16,16 @@ type ApproveReqProps = {
   mess: string | boolean,
 }
 
-type MessReqRow = Database['public']['Tables']['messreq']['Row']
+export type MessReqRow = Database['public']['Tables']['messreq']['Row']
 
 export default function ApproveReq(props: ApproveReqProps){
 
 
   const [data, setData] = useState<Array<MessReqRow> | null>()
+  const [pageStatus, setPageStatus] = useState<boolean>(false)
   const supabase = props.supabase
   const toastFunctions = new ToastFunctions()
+  const [refreshData, setrefreshData] = useState<boolean>(false)
 
   function raiseError(error : any) {
     toastFunctions.error("Something went wrong.")
@@ -41,6 +44,7 @@ export default function ApproveReq(props: ApproveReqProps){
 
     if (error) {
       raiseError(error)
+      return
     }
     setData(data)
   }
@@ -55,6 +59,7 @@ export default function ApproveReq(props: ApproveReqProps){
           .update({Rejected:true})
           .eq("id", rejectedData.id)
         toastFunctions.success(`Mess Swap request from ${rejectedData.Sender} rejected`)
+        setrefreshData(!refreshData)
         return
       }
       catch (e) {
@@ -86,6 +91,7 @@ export default function ApproveReq(props: ApproveReqProps){
       }
       else {
         toastFunctions.success("Mess swap has been approved. Contact SWD for further details.")
+        setrefreshData(!refreshData)
       }
     }
 
@@ -107,10 +113,14 @@ export default function ApproveReq(props: ApproveReqProps){
     if (props.mess) {
       fetchReqs()
     }
-  }, [props.mess])
+  }, [props.mess,refreshData])
 
 
-  if (data) {
+
+  if (pageStatus){
+    return <OutgoingReq supabase={props.supabase} studentUID={props.studentUID} pageStatus={pageStatus} setpageStatus={setPageStatus}/>
+  }
+  else if (data) {
     return displayRequests()
   }
   else if (!data) {
@@ -124,9 +134,13 @@ export default function ApproveReq(props: ApproveReqProps){
   function displayRequests(){
     return data! && (
       <div>
-        <h3>Pending requests</h3>
+        <button className='customBtn' onClick={() => {
+          setData(null)
+          setPageStatus(!pageStatus)
+        }}>Outgoing Requests</button>
+        <h3>Incoming requests</h3>
         {data.map((request, index) => {
-          return <RequestPane id={`${index}`} senderName={request.Name} sender={request.Sender} timestamp={new Date(request.time).toLocaleString()} mess={String(request.Mess)} onClick={handleReqPaneClick}></RequestPane>
+          return <RequestPane id={`${index}`} senderName={request.Name} sender={request.Sender} timestamp={new Date(request.time).toLocaleString()} mess={String(request.Mess)} onClick={handleReqPaneClick}/>
         })}
         <ToastContainer limit={2} />
       </div>
@@ -135,7 +149,8 @@ export default function ApproveReq(props: ApproveReqProps){
 
   function displaySkeleton() {
     return (<>
-      <h3>Pending requests</h3>
+    <button className='customBtn'>{pageStatus?'Incoming Requests':'Outgoing Requests'}</button>
+      <h3>Incoming requests</h3>
       <ReqSkeleton />
       <ToastContainer limit={2} />
     </>)

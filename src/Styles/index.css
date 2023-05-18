@@ -22,7 +22,7 @@ body {
     margin-left: 15px;
     margin-right: 15px;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     align-self: center;   
 }
 
@@ -31,7 +31,7 @@ body {
     height: 30px; 
 }
 
-#root #approve{
+#root #approve,#delete{
     background-color: #00ff00;
 }
 
@@ -54,6 +54,16 @@ background-clip: text;
     margin: auto 5px 1px;
     width: 200px;
     height: 180px;
+}
+
+#root .requestBoxOutgoing{
+    display: inline-block;
+    opacity: 0.70;
+    border: 2px solid cyan;
+    border-radius: 10px;
+    margin: auto 5px 1px;
+    width: 200px;
+    height: 100px;
 }
 
 #root .requestBox:hover{

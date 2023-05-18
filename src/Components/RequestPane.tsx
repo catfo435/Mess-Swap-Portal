@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 type RequestPaneProps = {
     id:string,
     mess:string,
-    senderName: string,
+    senderName: string | null,
     sender: string,
     onClick:Function,
     timestamp:string
