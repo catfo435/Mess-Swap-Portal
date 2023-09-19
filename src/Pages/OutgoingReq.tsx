@@ -37,6 +37,7 @@ export default function OutgoingReq(props : OutgoingReqProps) {
 
       useEffect(()=>{
         fetchOutgoingReqs()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       },[refreshData])
     
 
