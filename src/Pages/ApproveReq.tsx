@@ -107,17 +107,18 @@ export default function ApproveReq(props: ApproveReqProps){
       raiseError(error)
     }
 
-    async function setMess(){
-      const { error } = await supabase
-      .from('messsave')
-      .insert({ UID:props.studentUID, mess: parseInt(props.mess as string) })
+    // async function setMess(){
+    //   const { error } = await supabase
+    //   .from('messsave')
+    //   .update({ Mess_R: parseInt(props.mess as string) })
+    //   .eq("Receiver", props.studentUID)
 
-      if (error) {
-        raiseError(error)
-      }
-    }
+    //   if (error) {
+    //     raiseError(error)
+    //   }
+    // }
 
-    await setMess();
+    // await setMess();
   }
 
 
