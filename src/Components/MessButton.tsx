@@ -16,6 +16,10 @@ export default class MessButton extends Component<MessButtonProps> {
       <input style={{display:'inline'}} id={this.props.id} name='mess' type="radio" value="1" onChange={this.props.onChange}/>
       <label>Mess 2</label>
       <input style={{display:'inline'}} id={this.props.id} name='mess' type="radio" value="2" onChange={this.props.onChange}/>
+      <label>Mess 3</label>
+      <input style={{display:'inline'}} id={this.props.id} name='mess' type="radio" value="3" onChange={this.props.onChange}/>
+      <label>Mess 4</label>
+      <input style={{display:'inline'}} id={this.props.id} name='mess' type="radio" value="4" onChange={this.props.onChange}/>
       </form>
       </>
     )

@@ -59,13 +59,6 @@ export default function MainPage() {
       console.error(error);
       return
     }
-
-    if (data[0]) {
-      toastFunctions.warn("Mess Swapped Already, cannot place another request.")
-      setTimeout(() => {
-        window.location.replace("https://swd.bits-hyderabad.ac.in")
-      }, 3000)
-    }
   }
 
   useEffect(() => {

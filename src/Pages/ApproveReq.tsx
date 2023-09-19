@@ -39,6 +39,7 @@ export default function ApproveReq(props: ApproveReqProps){
       .select()
       .eq("Receiver", props.studentUID)
       .eq("Rejected",false)
+      .neq("Approved",true)
       .neq("Mess", parseInt(props.mess as string))
 
 
@@ -105,6 +106,18 @@ export default function ApproveReq(props: ApproveReqProps){
     if (error) {
       raiseError(error)
     }
+
+    async function setMess(){
+      const { error } = await supabase
+      .from('messsave')
+      .insert({ UID:props.studentUID, mess: parseInt(props.mess as string) })
+
+      if (error) {
+        raiseError(error)
+      }
+    }
+
+    await setMess();
   }
 
 
