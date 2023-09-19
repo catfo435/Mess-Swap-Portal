@@ -6,6 +6,6 @@ type ProfilePicProps = {
 
 export default function ProfilePic(props: ProfilePicProps) {
   return (
-    <div><img src={props.imageUrl} alt='User pfp'></img></div>
+    <div><img src={props.imageUrl} alt='User pfp' style={{borderRadius:"50%"}}></img></div>
   )
 }
