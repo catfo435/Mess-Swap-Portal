@@ -16,6 +16,7 @@ import PlaceReq from './Pages/PlaceReq'
 import ApproveReq from './Pages/ApproveReq'
 import Header from './Components/Header'
 import MessButton from './Components/MessButton';
+import ProfilePic from './Components/ProfilePic';
 
 export default function MainPage() {
 
@@ -25,6 +26,7 @@ export default function MainPage() {
     const studentData: any = jwt_decode(response.credential!)
     let uniqueID = studentData.email.match(/^([^@]*)@/)[1]
     setUID(uniqueID)
+    setstudentPicURL(studentData.picture)
     setName(studentData.name)
   }
 
@@ -36,6 +38,7 @@ export default function MainPage() {
 
   const [studentUID, setUID] = useState<string>("");
   const [studentName, setName] = useState<string>("");
+  const [studentPicURL, setstudentPicURL] = useState<string>("");
   const [mess, setMess] = useState<string | boolean>(false)
   const [pageStatus, setPageStatus] = useState<boolean>(false);
   const supabase = createClient<Database>(process.env.REACT_APP_SUPABASEURL!, process.env.REACT_APP_SUPABASEKEY!)
@@ -90,6 +93,7 @@ export default function MainPage() {
         }>Switch Account</button></GoogleOAuthProvider>
       {pageStatus ? <button className='customBtn' onClick={handleSectionSwap}>Place Requests</button> : <button className='customBtn' disabled={studentUID ? false : true} onClick={handleSectionSwap}>Approve Requests</button>}
       {!(studentUID) || <h2>Welcome, <span style={{ color: 'cyan' }}>{studentName}</span></h2>}
+      {!(studentUID) || <ProfilePic imageUrl={studentPicURL}/>}
       {!(studentUID) || <MessButton id="MessHave" onChange={handleMessButton} />}
       {pageStatus ? <ApproveReq studentName = {studentName} mess={mess} studentUID={studentUID} supabase={supabase}></ApproveReq> : <PlaceReq studentName={studentName} mess={mess} studentUID={studentUID} supabase={supabase}></PlaceReq>}
       <ToastContainer limit={2} />
