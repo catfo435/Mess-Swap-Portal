@@ -1,17 +1,14 @@
 # Mock Mess Swap Portal SWD
 
-A mock mess swap portal created for SWD Inductions 
+## Tasks to be completed(Crux Induction Round 3)
+branch 1:
 
-## Tasks to be completed
-* ~~Accept Request section (partially done, cant accept requests, but pending requests are shown)~~
-* ~~Ongoing Requests Section (If user wants to delete a previous request)~~
-* Admin Page to control the website with privileges
-* ~~Add Approve and Reject button on Hover instead of just clicking to approve~~
+- [x]allow repeated swaps 
+- [x] add 2 more messes
+- [x] delete rows once swapped
+- [x] once swapped, swap with new mess as well
+- [x] pfp from mail
 
-* ~~Mess 1 and Mess 2~~
-* ~~If the Receiver sends a request to the Sender, the mess swap request will be blocked.~~
-* ~~CSS Styling~~
-* ~~Custom Alerts(Instead of the default JS alerts)~~
-* ~~Centre the Google Sign in button~~
-* ~~Configure local storage to store requests(or a server?)~~
-* ~~Google One-Tap Auto Sign in~~
+branch 2:
+- [ ] same batch, for FD 
+- [ ] sign in portal/sign up
